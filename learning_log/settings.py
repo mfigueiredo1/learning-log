@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
+
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -147,8 +148,14 @@ LOGIN_URL = 'users:login'
 
 LOGOUT_REDIRECT_URL = '/'
 # Heroku settings 
-
+import os
+import django_heroku
 django_heroku.settings(locals())
+
+if os.environ.get('DEBUG') == 'TRUE':
+    DEBUG = True
+elif os.environ.get('DEGUB') == 'FALSE':
+    DEBUG = False
 
 cwd = os.getcwd()
 if cwd == '/app' or cwd[:4] == '/tmp':
