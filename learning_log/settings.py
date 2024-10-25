@@ -102,7 +102,8 @@ WSGI_APPLICATION = 'learning_log.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://localhost')
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL', 'postgres://localhost')
+    )
 }
 
 
