@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['your-heroku-app-name.herokuapp.com', 'localhost', '127.0.0.1']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP connections to HTTPS
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'  # Use leading slash for static URL
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where collectstatic will collect files
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # If you have a local static directory
+
 SECRET_KEY = 'django-insecure-(0e42215@w+&&*0hom#2f%#4nb(a$*sf*k%_%+(c0st=g4h5uz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -137,3 +149,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Heroku settings 
 
 django_heroku.settings(locals())
+
+cwd = os.getcwd()
+if cwd == '/app' or cwd[:4] == '/tmp':
+    import dj_database_url
