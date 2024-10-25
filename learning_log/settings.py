@@ -11,11 +11,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-
 import dj_database_url
+import django_heroku
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
@@ -31,15 +34,17 @@ SECURE_SSL_REDIRECT = True  # Redirect all HTTP connections to HTTPS
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'  # Use leading slash for static URL
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where collectstatic will collect files
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # If you have a local static directory
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory for collectstatic
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Local static directory (optional)
 
 SECRET_KEY = 'django-insecure-(0e42215@w+&&*0hom#2f%#4nb(a$*sf*k%_%+(c0st=g4h5uz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['learning-log.herokuapp.com',
+                 'localhost',
+                 '127.0.0.1']
 
 
 # Application definition
@@ -75,7 +80,7 @@ ROOT_URLCONF = 'learning_log.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,14 +98,13 @@ WSGI_APPLICATION = 'learning_log.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default='postgres://localhost')
 }
+
 
 # Configure database for Heroku using dj_database_url
 if os.getenv('DATABASE_URL'):
@@ -152,7 +156,7 @@ LOGIN_URL = 'users:login'
 
 LOGOUT_REDIRECT_URL = '/'
 # Heroku settings 
-import django_heroku
+
 django_heroku.settings(locals())
 
 if os.environ.get('DEBUG') == 'TRUE':
