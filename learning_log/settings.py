@@ -46,18 +46,16 @@ INSTALLED_APPS = (
     'users',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-)
-
+]
 ROOT_URLCONF = 'learning_log.urls'
 
 TEMPLATES = [
@@ -113,8 +111,8 @@ STATIC_URL = '/static/'
 # My settings
 LOGIN_URL = '/users/login/'
 
-# Settings for django-bootstrap3
-BOOTSTRAP3 = {
+# Settings for django-bootstrap4
+BOOTSTRAP4 = {
     'include_jquery': True,
     }
 
