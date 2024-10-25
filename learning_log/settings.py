@@ -101,6 +101,9 @@ DATABASES = {
     }
 }
 
+# Configure database for Heroku using dj_database_url
+if os.getenv('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -148,13 +151,12 @@ LOGIN_URL = 'users:login'
 
 LOGOUT_REDIRECT_URL = '/'
 # Heroku settings 
-import os
 import django_heroku
 django_heroku.settings(locals())
 
 if os.environ.get('DEBUG') == 'TRUE':
     DEBUG = True
-elif os.environ.get('DEGUB') == 'FALSE':
+elif os.environ.get('DEBUG') == 'FALSE':
     DEBUG = False
 
 cwd = os.getcwd()
